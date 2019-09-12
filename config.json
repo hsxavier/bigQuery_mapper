@@ -2,9 +2,9 @@
     "credentials": "/home/skems/gabinete/projetos/keys-configs/gabinete-compartilhado.json",
     "printout": true,
     "get_views": true,
-    "views_path":  "../views/",
+    "views_path":  "view_queries/",
     "get_scheduled": true,
-    "scheduled_path": "../scheduled_queries/",
+    "scheduled_path": "sched_queries/",
     "flowchart": true,
-    "flowchart_file": "../flowcharts/all_tables_flowchart.pdf"
+    "flowchart_file": "flowcharts/all_tables_flowchart.pdf"
 }
