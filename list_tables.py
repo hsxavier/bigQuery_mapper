@@ -26,6 +26,7 @@ else:
     config = {
         "credentials": "/home/skems/gabinete/projetos/keys-configs/gabinete-compartilhado.json",
         "printout": True,
+        "table_list_file": "table_list.txt",
         "get_views": True,
         "views_path":  "../views/",
         "scheduled_path": "../scheduled_queries/"

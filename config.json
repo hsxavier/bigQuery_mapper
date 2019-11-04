@@ -1,6 +1,7 @@
 {
     "credentials": "/home/skems/gabinete/projetos/keys-configs/gabinete-compartilhado.json",
     "printout": true,
+    "table_list_file": "table_list.txt",
     "get_views": true,
     "views_path":  "view_queries/",
     "get_scheduled": true,

@@ -23,7 +23,12 @@ def list_tables(config):
     # Load config from file:
     if type(config) == str:
         with open(config, 'r') as f:
-            config = json.load(f)    
+            config = json.load(f)
+    if config['table_list_file'] != None:
+        save_list = True
+        list_file = config['table_list_file']
+    else:
+        save_list = False
     
     # Set path to BigQuery credentials:
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = config['credentials']
@@ -33,12 +38,18 @@ def list_tables(config):
     # Get list of datasets:
     datasets = list(client.list_datasets())
 
+    # Prepare table list file:
+    if save_list:
+        tf = open(list_file, 'w')
+    
     table_list = []
     for dataset in datasets:
         # Print dataset name:
         if config['printout']:
             print('{:40}   {}'.format(dataset.dataset_id, '----------'))
-
+        if save_list:
+            tf.write('{:40}   {}\n'.format(dataset.dataset_id, '----------'))
+        
         # Get list of tables in the dataset:
         tables = list(client.list_tables(dataset.dataset_id))
         for table in tables:
@@ -46,7 +57,9 @@ def list_tables(config):
             # Print table name and type:
             if config['printout']:
                 print('  {:40} ({})'.format(table.table_id, table.table_type))
-
+            if save_list:
+                tf.write('  {:40} ({})\n'.format(table.table_id, table.table_type))
+                
             # Include table (name and type) in list:
             table_list.append({'name': dataset.dataset_id + '.' + table.table_id, 'type': table.table_type})
 
@@ -61,7 +74,11 @@ def list_tables(config):
 
         if config['printout']:
             print('')
+        if save_list:
+            tf.write('\n')
 
+    if save_list:
+        tf.close()
     # Return list of dicts with table names and types: 
     return table_list
 
