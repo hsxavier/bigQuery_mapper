@@ -6,7 +6,6 @@ from google.cloud import bigquery
 from subprocess import check_output, call
 import json
 import requests
-import aux_functions as aux
 from glob import glob
 
 
