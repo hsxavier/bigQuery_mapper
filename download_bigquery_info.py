@@ -3,9 +3,20 @@ import os
 import json
 from google.cloud import bigquery
 # get_scheduled_queries imports:
-from subprocess import check_output
+from subprocess import check_output, call
 import json
 import requests
+import aux_functions as aux
+from glob import glob
+
+
+def del_folder_files(folder, ext=''):
+    """
+    Given a path to a directory 'folder', delete all files with extension 'ext'.
+    """
+    file_list = glob(folder + '*' + ext)
+    for f in file_list:
+        call(['rm', '-f', f])
 
 
 def list_tables(config):
@@ -41,7 +52,12 @@ def list_tables(config):
     # Prepare table list file:
     if save_list:
         tf = open(list_file, 'w')
-    
+
+    # Delete previously saved views:
+    if config['get_views']:
+        #print('Deleting old views...')
+        del_folder_files(config['views_path'], '.sql')
+
     table_list = []
     for dataset in datasets:
         # Print dataset name:
@@ -122,6 +138,11 @@ def get_scheduled_queries(config):
     sched_list = sched_raw['transferConfigs']
     # Remove disabled (on pause) queries:
     sched_list = list(filter(lambda q: 'disabled' not in q.keys(), sched_list))
+
+    # Delete previously saved views:
+    if config['get_scheduled']:
+        #print('Deleting old views...')
+        del_folder_files(config['scheduled_path'], '.sql')
     
     for s in sched_list:
 
